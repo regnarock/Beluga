@@ -24,30 +24,18 @@ class ModuleImpl implements ModuleInternal
 
 	public function _loadConfig(beluga : Beluga, module : ModuleConfig) : Void {
 		this.beluga = beluga;
-		
+
 		for (table in module.tables) {
 			//Initialize all module tables
 			beluga.db.initTable(module.name, table);
 		}
-
-		var xml = Xml.parse(module.config);
-		var fast = new Fast(xml);
-
-		// Look for triggers
-		for (trigger in fast.nodes.trigger) {
-			beluga.triggerDispatcher.addRoutesFromFast(trigger);
-		}
-
-		loadConfig(fast);
 	}
 
-	//Would be better if ModuleImpl was declared abstract or equivalent
-	//The method below should always be defined in ModuleImpl children and has nothing to do here :(
-	//Macro check would do the trick :)
-	public function loadConfig(data : Fast) {
-		throw new BelugaException("Missing implementation of loadConfig in module " + Type.getClassName(Type.getClass(this)));
+	public function initialize(beluga : Beluga) : Void {
+		
 	}
 
+	
 	public function getWidget(name : String) : Widget {
 		//First retrieve the class path
 		var module = Type.getClassName(Type.getClass(this)).split(".")[2];

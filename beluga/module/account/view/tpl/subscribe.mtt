@@ -1,4 +1,4 @@
-<div class="beluga account subscribe" id="::_id::">
+<div class="beluga account subscribe container" id="::_id::">
 	<h1>Inscrivez vous</h1>
 	::if (error)::
 	::if (error != "")::
@@ -7,7 +7,6 @@
 	::end::
 	<br/>
 	<form action="::base_url::/beluga/account/subscribe" class="form-horizontal" role="form" method="POST">
-		
 		<div class="form-group">
 			<label class="col-sm-2 control-label" for="login">Identifiant</label>
 			<div class="col-sm-6">

@@ -7,7 +7,7 @@ import haxe.xml.Fast;
 import sys.io.File;
 import sys.FileSystem;
 
-typedef ModuleConfig = { name : String, path : String, config : String, tables : Array<String> };
+typedef ModuleConfig = { name : String, path : String, tables : Array<String> };
 
 #if !macro
 @:build(beluga.core.macro.ConfigLoader.build())
@@ -101,9 +101,6 @@ class ConfigLoader {
                 var modulePath = installPath + "/module/" + name.toLowerCase();
                 var module : String = "beluga.module." + name.toLowerCase();// + "." + name.substr(0, 1).toUpperCase() + name.substr(1) + "Impl";
 
-                //Build a list of modules config files
-                var config = File.getContent(installPath + "/module/" + name.toLowerCase() + "/config.xml");
-
                 //Get every single models from the current module
                 var tables = new Array<String>();
                 if (!FileSystem.isDirectory(modulePath + "/model")) {
@@ -116,7 +113,7 @@ class ConfigLoader {
                     }
                 }
 
-                modules.push({name: name, path: module, config: config, tables: tables});
+                modules.push({name: name, path: module, tables: tables});
             }
         }
     }
@@ -174,4 +171,13 @@ class ConfigLoader {
 
         return Context.makeExpr(path + "/beluga", Context.currentPos());
     }
+	
+	macro public static function getBaseUrl() :ExprOf<String> {
+		var base_url : String;
+		if (ConfigLoader.config.hasNode.url && ConfigLoader.config.node.url.hasNode.base && ConfigLoader.config.node.url.node.base.has.value)
+			base_url = ConfigLoader.config.node.url.node.base.att.value;
+		else
+			base_url = "";
+		return macro $v{base_url};
+	}
 }

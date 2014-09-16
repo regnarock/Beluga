@@ -16,38 +16,38 @@ class NewsApi {
     }
 
     public function doDefault() {
-        beluga.triggerDispatcher.dispatch("beluga_news_default", []);
+        this.module.triggers.defaultNews.dispatch();
     }
 
     public function doPrint(args : {news_id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_print", [args]);
-    }
-
-    public function doCreate(args : {title : String, text : String}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_create", [args]);
-    }
-
-    public function doEdit(args : {news_id : Int, title : String, text : String}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_edit", [args]);
-    }
-
-    public function doDelete(args : {news_id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_delete", [args]);
-    }
-
-    public function doDeleteCom(args : {com_id : Int, news_id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_deleteCom", [args]);
+    	this.module.triggers.print.dispatch(args);
     }
 
     public function doRedirect() {
-        beluga.triggerDispatcher.dispatch("beluga_news_redirect", []);
+    	this.module.triggers.redirect.dispatch();
+    }
+
+    public function doCreate(args : {title : String, text : String}) {
+        this.module.create(args);
+    }
+
+    public function doDelete(args : {news_id : Int}) {
+        this.module.delete(args);
+    }
+
+    public function doDeleteCom(args : {com_id : Int, news_id : Int}) {
+        this.module.deleteComment({news_id : args.news_id, comment_id : args.com_id});
     }
 
     public function doCreateComment(args : {news_id : Int, text : String}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_createComment", []);
+        this.module.addComment(args);
+    }
+
+    public function doEdit(args : {news_id : Int, title : String, text : String}) {
+        this.module.edit(args);
     }
 
     public function doRedirectEdit(args : {news_id : Int}) {
-        beluga.triggerDispatcher.dispatch("beluga_news_redirectEdit", [args]);
+    	this.module.triggers.redirectEdit.dispatch(args);
     }
 }
